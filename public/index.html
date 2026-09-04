@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CloudNotes - A lightweight, secure cloud-based note-taking application">
+  <title>CloudNotes - Your Notes in the Cloud</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ─── Auth Screen ──────────────────────────────────────── -->
+  <div id="auth-screen" class="screen active">
+    <div class="auth-container">
+      <div class="auth-brand">
+        <div class="brand-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="12" fill="url(#brand-gradient)"/>
+            <path d="M14 16h20v2H14zm0 6h20v2H14zm0 6h14v2H14zm0 6h18v2H14z" fill="rgba(255,255,255,0.9)"/>
+            <defs>
+              <linearGradient id="brand-gradient" x1="0" y1="0" x2="48" y2="48">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1>CloudNotes</h1>
+        <p class="brand-tagline">Your thoughts, beautifully organized</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button id="tab-login" class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+          <button id="tab-register" class="auth-tab" onclick="switchTab('register')">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" placeholder="Enter your username" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password" required autocomplete="current-password">
+          </div>
+          <button type="submit" id="login-btn" class="btn btn-primary">Sign In</button>
+          <p class="auth-hint">Demo: <strong>demo</strong> / <strong>password123</strong></p>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="register-username">Username</label>
+            <input type="text" id="register-username" placeholder="Choose a username" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" placeholder="your@email.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password">
+          </div>
+          <button type="submit" id="register-btn" class="btn btn-primary">Create Account</button>
+        </form>
+
+        <div id="auth-error" class="error-message" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── App Screen ───────────────────────────────────────── -->
+  <div id="app-screen" class="screen">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-icon-sm">
+          <svg width="28" height="28" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="12" fill="url(#brand-gradient2)"/>
+            <path d="M14 16h20v2H14zm0 6h20v2H14zm0 6h14v2H14z" fill="rgba(255,255,255,0.9)"/>
+            <defs>
+              <linearGradient id="brand-gradient2" x1="0" y1="0" x2="48" y2="48">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="header-title">CloudNotes</span>
+      </div>
+      <div class="header-center">
+        <div class="search-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search-input" placeholder="Search notes..." oninput="handleSearch(event)">
+        </div>
+      </div>
+      <div class="header-right">
+        <span id="user-display" class="user-badge"></span>
+        <button id="logout-btn" class="btn btn-ghost" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+
+      <!-- Sidebar: Notes List -->
+      <aside class="notes-sidebar">
+        <div class="sidebar-header">
+          <h2>My Notes</h2>
+          <button id="new-note-btn" class="btn btn-icon" onclick="createNewNote()" title="New Note">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+        </div>
+        <div id="notes-list" class="notes-list">
+          <!-- Notes populated by JS -->
+        </div>
+      </aside>
+
+      <!-- Editor Panel -->
+      <section class="note-editor">
+        <div id="editor-empty" class="editor-empty">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <p>Select a note or create a new one</p>
+        </div>
+        <div id="editor-active" class="editor-active" style="display:none;">
+          <input type="text" id="note-title" class="editor-title" placeholder="Note title..." oninput="handleNoteChange()">
+          <textarea id="note-content" class="editor-content" placeholder="Start writing..." oninput="handleNoteChange()"></textarea>
+          <div class="editor-footer">
+            <span id="note-date" class="note-meta"></span>
+            <div class="editor-actions">
+              <button id="save-note-btn" class="btn btn-primary btn-sm" onclick="saveCurrentNote()">Save</button>
+              <button id="delete-note-btn" class="btn btn-danger btn-sm" onclick="deleteCurrentNote()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
