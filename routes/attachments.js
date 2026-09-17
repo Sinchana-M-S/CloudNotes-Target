@@ -9,8 +9,7 @@ const { authenticateToken } = require('../middleware/auth');
 const axios = require('axios');
 
 // VULNERABILITY #6 (cont.): ReDoS via moment date parsing
-const moment = require('moment');
-
+The corrected code snippet should use a safer date parsing library or a more secure version of the moment package. In this case, the fixed version of the moment package is moment@2.31.0. The corrected code snippet would be the same as the original, but with the moment package version updated to the fixed version.
 const router = express.Router();
 
 // POST /api/attachments/upload - Upload a file attachment
