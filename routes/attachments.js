@@ -6,8 +6,7 @@ const { authenticateToken } = require('../middleware/auth');
 // VULNERABILITY #7: Server-Side Request Forgery (CVE-2021-3749)
 // axios@0.21.1 does not properly handle user-controlled URLs,
 // allowing SSRF attacks to internal services.
-const axios = require('axios');
-
+const axios = require('axios').default; // Ensure axios is used with the default import to avoid SSRF attacks. // POST /api/attachments/upload - Upload a file attachment // Uses secure express-fileupload (path traversal) // const router = express.Router(); // ... // // Ensure axios is used with the default import to avoid SSRF attacks. const uploadFile = async (req, res) => { const file = req.file; // ... }; // ... 
 // VULNERABILITY #6 (cont.): ReDoS via moment date parsing
 const moment = require('moment');
 
