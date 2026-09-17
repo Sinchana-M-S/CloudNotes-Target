@@ -1,5 +1,18 @@
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'cloudnotes-super-secret-key-2024';
 
+function authenticateToken(req, res, next) {
+  const token = req.header('Authorization').replace('Bearer ', '');
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).send('Invalid token');
+    }
+    // ... rest of the code ...
+  });
+}
+
+// Update to the latest version of jsonwebtoken
+const jwt = require('jsonwebtoken@9.0.3');
 const JWT_SECRET = 'cloudnotes-super-secret-key-2024';
 
 /**
