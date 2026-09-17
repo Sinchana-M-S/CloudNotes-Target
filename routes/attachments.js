@@ -7,6 +7,11 @@ const { authenticateToken } = require('../middleware/auth');
 // axios@0.21.1 does not properly handle user-controlled URLs,
 // allowing SSRF attacks to internal services.
 const axios = require('axios');
+const proxy = 'http://example.com';
+const url = 'https://target.com';
+axios.get(url, { proxy: proxy });
+// Replace with a secure proxy or remove the proxy option
+// axios.get(url);
 
 // VULNERABILITY #6 (cont.): ReDoS via moment date parsing
 const moment = require('moment');
