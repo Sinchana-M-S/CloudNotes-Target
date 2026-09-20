@@ -9,8 +9,7 @@ const { authenticateToken } = require('../middleware/auth');
 const axios = require('axios');
 
 // VULNERABILITY #6 (cont.): ReDoS via moment date parsing
-const moment = require('moment');
-
+const moment = require('moment@2.31.0');
 const router = express.Router();
 
 // POST /api/attachments/upload - Upload a file attachment
