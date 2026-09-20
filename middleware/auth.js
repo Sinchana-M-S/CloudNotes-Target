@@ -1,5 +1,13 @@
-const jwt = require('jsonwebtoken');
-
+const jwt = require('jsonwebtoken@9.0.3'); // update to the fixed version
+function authenticateToken(req, res, next) {
+  const JWT_SECRET = 'cloudnotes-super-secret-key-2024';
+  const token = req.header('Authorization').replace('Bearer ', '');
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) return next(err);
+    req.user = decoded;
+    next();
+  });
+}
 const JWT_SECRET = 'cloudnotes-super-secret-key-2024';
 
 /**
