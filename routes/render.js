@@ -5,8 +5,7 @@ const { authenticateToken } = require('../middleware/auth');
 // VULNERABILITY #8: ReDoS in Markdown Parsing (CVE-2022-21681)
 // marked@0.3.9 is vulnerable to Regular Expression Denial of Service.
 // Specially crafted markdown input can cause catastrophic backtracking.
-const marked = require('marked');
-
+const marked = require('marked@0.3.17'); // Use the fixed version of the marked package
 const router = express.Router();
 
 // GET /api/render/:id - Render a note's content as HTML
