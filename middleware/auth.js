@@ -1,5 +1,19 @@
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'cloudnotes-super-secret-key-2024';
 
+function authenticateToken(req, res, next) {
+  const token = req.header('Authorization');
+  if (!token) return res.status(401).send('Access denied');
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).send('Invalid token');
+  }
+}
 const JWT_SECRET = 'cloudnotes-super-secret-key-2024';
 
 /**
