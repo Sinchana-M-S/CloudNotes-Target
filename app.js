@@ -6,8 +6,24 @@ const { initializeDatabase } = require('./db');
 // VULNERABILITY #5: Path Traversal (CVE-2022-27261)
 // express-fileupload@1.1.7-alpha.3 allows path traversal via
 // crafted filenames in multipart uploads.
-const fileUpload = require('express-fileupload');
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const { initializeDatabase } = require('./db');
 
+const fileUpload = require('express-fileupload@1.1.9');
+
+const app = express();
+
+app.use(fileUpload({ limits: { fileSize: 10 * 1024 * 1024 } }));
+
+app.use(cors());
+
+app.use(express.static('public'));
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
 // VULNERABILITY #6: ReDoS (CVE-2022-31129)
 // moment@2.29.1 is vulnerable to Regular Expression Denial of Service
 // when parsing user-supplied date strings.
