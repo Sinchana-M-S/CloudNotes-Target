@@ -6,8 +6,15 @@ const { authenticateToken } = require('../middleware/auth');
 // VULNERABILITY #7: Server-Side Request Forgery (CVE-2021-3749)
 // axios@0.21.1 does not properly handle user-controlled URLs,
 // allowing SSRF attacks to internal services.
-const axios = require('axios');
-
+const axios = require('axios@1.15.1'); // or require('axios@0.31.1')
+// or use a try-catch block to handle the error and prevent the DoS attack
+// e.g.,
+try {
+  const response = await axios.get('https://example.com/stream', { responseType: 'stream' });
+} catch (error) {
+  console.error(error);
+  // handle the error and prevent the DoS attack
+}
 // VULNERABILITY #6 (cont.): ReDoS via moment date parsing
 const moment = require('moment');
 
