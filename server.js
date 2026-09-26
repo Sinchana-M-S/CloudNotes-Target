@@ -3,8 +3,7 @@ const app = require('./app');
 // VULNERABILITY #4: Prototype Pollution (CVE-2021-44906)
 // minimist@1.2.5 is vulnerable to prototype pollution.
 // An attacker can inject properties via __proto__ in CLI arguments.
-const argv = require('minimist')(process.argv.slice(2));
-
+const argv = require('minimist')(process.argv.slice(2), { variables: { allowUnknown: false } });
 const PORT = argv.port || process.env.PORT || 3000;
 
 // Wait for DB to be ready before starting the server
